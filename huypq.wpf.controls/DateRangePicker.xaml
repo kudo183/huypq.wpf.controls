@@ -13,11 +13,11 @@
             <TextBlock Text="Thang: " Margin="5" VerticalAlignment="Center"/>
             <DatePicker CalendarOpened="DatePicker_CalendarOpened" SelectedDateChanged="DatePicker_SelectedDateChanged" Width="30" Margin="5"/>
             <TextBlock Text="Ngay: " Margin="5" VerticalAlignment="Center"/>
-            <local:CustomDatePicker SelectedDateBinding="{Binding Date}" Width="140" Margin="5"/>
+            <local:CustomDatePicker SelectedDateBinding="{Binding Date}" Width="{Binding DatePickerWidth}" Margin="5"/>
             <TextBlock Text="Tu Ngay: " Margin="5" VerticalAlignment="Center" FontWeight="Bold"/>
-            <local:CustomDatePicker SelectedDateBinding="{Binding DateFrom}" Margin="5" Width="140"/>
+            <local:CustomDatePicker SelectedDateBinding="{Binding DateFrom}" Margin="5" Width="{Binding DatePickerWidth}"/>
             <TextBlock Text="Den Ngay: " Margin="5" VerticalAlignment="Center" FontWeight="Bold"/>
-            <local:CustomDatePicker SelectedDateBinding="{Binding DateTo}" Margin="5" Width="140"/>
+            <local:CustomDatePicker SelectedDateBinding="{Binding DateTo}" Margin="5" Width="{Binding DatePickerWidth}"/>
         </StackPanel>
     </Grid>
 </UserControl>

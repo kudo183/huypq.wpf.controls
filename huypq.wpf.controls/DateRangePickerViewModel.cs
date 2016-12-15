@@ -7,7 +7,7 @@ namespace huypq.wpf.controls
 {
     public class DateRangePickerViewModel : INotifyPropertyChanged
     {
-        private void Log(string msg, [CallerMemberName] string caller=null)
+        private void Log(string msg, [CallerMemberName] string caller = null)
         {
             Console.WriteLine(string.Format("{0}: {1}", caller, msg));
         }
@@ -70,6 +70,22 @@ namespace huypq.wpf.controls
                 Log(date.ToShortDateString());
             }
         }
+
+        private double datePickerWidth = 150;
+
+        public double DatePickerWidth
+        {
+            get { return datePickerWidth; }
+            set
+            {
+                if (datePickerWidth == value)
+                    return;
+
+                datePickerWidth = value;
+                OnPropertyChanged();
+            }
+        }
+
 
         public event PropertyChangedEventHandler PropertyChanged;
 
