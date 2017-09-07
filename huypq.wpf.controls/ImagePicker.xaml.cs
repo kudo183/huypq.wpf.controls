@@ -38,12 +38,10 @@ namespace huypq.wpf.controls
             {
                 if (string.IsNullOrEmpty(ip.FilePath) == true)
                 {
-                    ip.img.Source = null;
-                    ip.ID = 0;
+                    ip.ImageStream = null;
                 }
                 else
                 {
-                    //ip.img.Source = new BitmapImage(new Uri(ip.FilePath));
                     var ms = new MemoryStream(File.ReadAllBytes(ip.FilePath));
                     ip.ImageStream = ms;
                 }
@@ -51,19 +49,7 @@ namespace huypq.wpf.controls
             catch { }
         }
         #endregion
-
-        #region ID
-        public int ID
-        {
-            get { return (int)GetValue(IDProperty); }
-            set { SetValue(IDProperty, value); }
-        }
-
-        // Using a DependencyProperty as the backing store for ID.  This enables animation, styling, binding, etc...
-        public static readonly DependencyProperty IDProperty =
-            DependencyProperty.Register("ID", typeof(int), typeof(ImagePicker), new FrameworkPropertyMetadata(0, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault));
-        #endregion
-
+        
         #region ImageStream
         public Stream ImageStream
         {
@@ -88,16 +74,54 @@ namespace huypq.wpf.controls
         }
         #endregion
 
+        private bool isEditable;
+
+        public bool IsEditable
+        {
+            get { return isEditable; }
+            set
+            {
+                isEditable = value;
+                if (brd != null)
+                {
+                    if (isEditable == true)
+                    {
+                        brd.Visibility = Visibility.Visible;
+                    }
+                    else
+                    {
+                        brd.Visibility = Visibility.Collapsed;
+                    }
+                }
+            }
+        }
+
+
         public ImagePicker()
         {
             InitializeComponent();
+
+            ContextMenuOpening += ImagePicker_ContextMenuOpening;
+        }
+
+        private void ImagePicker_ContextMenuOpening(object sender, ContextMenuEventArgs e)
+        {
+            if (isEditable == false)
+            {
+                e.Handled = true;
+            }
         }
 
         private void Rect_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
-            //var contextMenu = rect.ContextMenu;
-            //contextMenu.PlacementTarget = img;
-            //contextMenu.IsOpen = true;
+            //not working when use in datagrid column
+            //if (isEditable == true)
+            //{
+            //    var contextMenu = rect.ContextMenu;
+            //    contextMenu.PlacementTarget = img;
+            //    contextMenu.IsOpen = true;
+            //    e.Handled = true;
+            //}
         }
 
         private void Change_MenuItem_Click(object sender, RoutedEventArgs e)
@@ -140,8 +164,6 @@ namespace huypq.wpf.controls
             image.EndInit();
 
             image.Freeze();
-
-            imageStream.Close();
 
             return image;
         }

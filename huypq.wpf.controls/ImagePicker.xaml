@@ -6,7 +6,12 @@
              mc:Ignorable="d">
     <Grid>
         <Image x:Name="img"/>
-        <Rectangle Fill="Transparent" MouseLeftButtonDown="Rect_MouseLeftButtonDown">
+        <Border x:Name="brd" BorderThickness="1" BorderBrush="Red">
+            <Border BorderThickness="2" BorderBrush="White">
+                <Border BorderThickness="1" BorderBrush="Red"/>
+            </Border>
+        </Border>
+        <Rectangle x:Name="rect" Fill="Transparent" MouseLeftButtonDown="Rect_MouseLeftButtonDown">
             <Rectangle.ContextMenu>
                 <ContextMenu>
                     <MenuItem Header="Change" Click="Change_MenuItem_Click"/>
