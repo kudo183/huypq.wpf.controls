@@ -64,9 +64,16 @@
       <DependentUpon>DateRangePicker.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="ImagePicker.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DateRangePickerViewModel.cs" />
+    <Compile Include="ImagePicker.xaml.cs">
+      <DependentUpon>ImagePicker.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>

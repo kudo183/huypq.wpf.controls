@@ -1,0 +1,18 @@
+﻿<UserControl x:Class="huypq.wpf.controls.ImagePicker"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             mc:Ignorable="d">
+    <Grid>
+        <Image x:Name="img"/>
+        <Rectangle Fill="Transparent" MouseLeftButtonDown="Rect_MouseLeftButtonDown">
+            <Rectangle.ContextMenu>
+                <ContextMenu>
+                    <MenuItem Header="Change" Click="Change_MenuItem_Click"/>
+                    <MenuItem Header="Clear" Click="Clear_MenuItem_Click"/>
+                </ContextMenu>
+            </Rectangle.ContextMenu>
+        </Rectangle>
+    </Grid>
+</UserControl>
