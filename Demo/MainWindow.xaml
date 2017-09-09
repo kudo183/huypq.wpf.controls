@@ -8,7 +8,8 @@
         mc:Ignorable="d"
         Title="MainWindow"
         WindowState="Maximized">
-    <Grid>
+    <StackPanel>
         <controls:DateRangePicker DataContext="{Binding DateRangePickerViewModel}" Height="35"/>
-    </Grid>
+        <local:TestImagePicker/>
+    </StackPanel>
 </Window>

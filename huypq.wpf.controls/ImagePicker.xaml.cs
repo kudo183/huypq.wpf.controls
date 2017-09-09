@@ -1,8 +1,10 @@
 ﻿using Microsoft.Win32;
+using System.Collections.Generic;
 using System.IO;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using System.Windows.Media;
 using System.Windows.Media.Imaging;
 
 namespace huypq.wpf.controls
@@ -23,13 +25,13 @@ namespace huypq.wpf.controls
 
         // Using a DependencyProperty as the backing store for FilePath.  This enables animation, styling, binding, etc...
         public static readonly DependencyProperty FilePathProperty =
-            DependencyProperty.Register("FilePath", typeof(string), typeof(ImagePicker), new FrameworkPropertyMetadata(string.Empty, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault, OnFilePathChanged));
+            DependencyProperty.Register("FilePath", typeof(string), typeof(ImagePicker), new FrameworkPropertyMetadata(null, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault, OnFilePathChanged));
 
         private static void OnFilePathChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
             var ip = d as ImagePicker;
 
-            if (ip == null)
+            if (ip.IsHandlerSuspended(FilePathProperty) == true)
             {
                 return;
             }
@@ -38,18 +40,20 @@ namespace huypq.wpf.controls
             {
                 if (string.IsNullOrEmpty(ip.FilePath) == true)
                 {
-                    ip.ImageStream = null;
+                    ip.SetValueNoCallback(ImageStreamProperty, null);
+                    ip.SetImageControlSource(null);
                 }
                 else
                 {
                     var ms = new MemoryStream(File.ReadAllBytes(ip.FilePath));
-                    ip.ImageStream = ms;
+                    ip.SetValueNoCallback(ImageStreamProperty, ms);
+                    ip.SetImageControlSource(ImagePicker.LoadImage(ms));
                 }
             }
             catch { }
         }
         #endregion
-        
+
         #region ImageStream
         public Stream ImageStream
         {
@@ -65,12 +69,13 @@ namespace huypq.wpf.controls
         {
             var ip = d as ImagePicker;
 
-            if (ip == null)
+            if (ip.IsHandlerSuspended(ImageStreamProperty) == true)
             {
                 return;
             }
 
-            ip.img.Source = ImagePicker.LoadImage(ip.ImageStream);
+            ip.SetValueNoCallback(FilePathProperty, null);
+            ip.SetImageControlSource(ImagePicker.LoadImage(ip.ImageStream));
         }
         #endregion
 
@@ -96,12 +101,21 @@ namespace huypq.wpf.controls
             }
         }
 
-
         public ImagePicker()
         {
             InitializeComponent();
 
+            if (isEditable == false)
+            {
+                brd.Visibility = Visibility.Collapsed;
+            }
+
             ContextMenuOpening += ImagePicker_ContextMenuOpening;
+        }
+
+        private void SetImageControlSource(ImageSource source)
+        {
+            img.Source = source;
         }
 
         private void ImagePicker_ContextMenuOpening(object sender, ContextMenuEventArgs e)
@@ -134,7 +148,7 @@ namespace huypq.wpf.controls
 
         private void Clear_MenuItem_Click(object sender, RoutedEventArgs e)
         {
-            FilePath = string.Empty;
+            FilePath = null;
         }
 
         public static BitmapImage LoadImage(byte[] imageData)
@@ -153,19 +167,66 @@ namespace huypq.wpf.controls
             if (imageStream == null)
                 return null;
 
-            var image = new BitmapImage();
+            try
+            {
+                var image = new BitmapImage();
 
-            imageStream.Position = 0;
-            image.BeginInit();
-            image.CreateOptions = BitmapCreateOptions.PreservePixelFormat;
-            image.CacheOption = BitmapCacheOption.OnLoad;
-            image.UriSource = null;
-            image.StreamSource = imageStream;
-            image.EndInit();
+                imageStream.Position = 0;
+                image.BeginInit();
+                image.CreateOptions = BitmapCreateOptions.PreservePixelFormat;
+                image.CacheOption = BitmapCacheOption.OnLoad;
+                image.UriSource = null;
+                image.StreamSource = imageStream;
+                image.EndInit();
 
-            image.Freeze();
+                image.Freeze();
 
-            return image;
+                return image;
+            }
+            catch { }
+
+            return null;
         }
+
+        private void SetValueNoCallback(DependencyProperty property, object value)
+        {
+            SetIsHandlerSuspended(property, true);
+            try
+            {
+                SetCurrentValue(property, value);
+            }
+            finally
+            {
+                SetIsHandlerSuspended(property, false);
+            }
+        }
+
+        private Dictionary<DependencyProperty, bool> _isHandlerSuspended;
+
+        private bool IsHandlerSuspended(DependencyProperty property)
+        {
+            return _isHandlerSuspended != null && _isHandlerSuspended.ContainsKey(property);
+        }
+
+        private void SetIsHandlerSuspended(DependencyProperty property, bool value)
+        {
+            if (value)
+            {
+                if (_isHandlerSuspended == null)
+                {
+                    _isHandlerSuspended = new Dictionary<DependencyProperty, bool>(2);
+                }
+
+                _isHandlerSuspended[property] = true;
+            }
+            else
+            {
+                if (_isHandlerSuspended != null)
+                {
+                    _isHandlerSuspended.Remove(property);
+                }
+            }
+        }
+
     }
 }
