@@ -58,6 +58,18 @@ namespace Demo
             }
         }
 
+        private Stream testStream1;
+
+        public Stream TestStream1
+        {
+            get { return testStream1; }
+            set
+            {
+                testStream1 = value;
+                OnPropertyChanged();
+            }
+        }
+
         public event PropertyChangedEventHandler PropertyChanged;
 
         protected virtual void OnPropertyChanged([CallerMemberName] string name = null)
@@ -69,6 +81,8 @@ namespace Demo
         {
             InitializeComponent();
             File2 = @"C:\Users\Public\Pictures\Sample Pictures\Koala.jpg";
+            File3 = @"C:\Users\Public\Pictures\Sample Pictures\Chrysanthemum.jpg";
+            //TestStream = new MemoryStream(File.ReadAllBytes(@"C:\Users\Public\Pictures\Sample Pictures\Chrysanthemum.jpg"));
             DataContext = this;
         }
 

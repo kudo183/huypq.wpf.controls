@@ -8,8 +8,8 @@
              mc:Ignorable="d">
     <StackPanel>
         <control:ImagePicker Width="100" Height="100" FilePath="{Binding File1}"/>
-        <control:ImagePicker Width="100" Height="100" FilePath="{Binding File2}" IsEditable="True"/>
-        <control:ImagePicker Width="100" Height="100" FilePath="{Binding File3}" ImageStream="{Binding TestStream}" IsEditable="True"/>
+        <control:ImagePicker Width="100" Height="100" FilePath="{Binding File2}" ImageStream="{Binding TestStream}" IsEditable="True"/>
+        <control:ImagePicker Width="100" Height="100" ImageStream="{Binding TestStream1}" FilePath="{Binding File3}" IsEditable="True"/>
         <TextBlock>
             <TextBlock.Text>
                 <MultiBinding StringFormat="{}{0} + {1} + {2}">

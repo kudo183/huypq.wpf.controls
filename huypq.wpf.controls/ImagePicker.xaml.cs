@@ -10,7 +10,8 @@ using System.Windows.Media.Imaging;
 namespace huypq.wpf.controls
 {
     /// <summary>
-    /// Interaction logic for ImagePicker.xaml
+    /// The binding order of FilePath and ImageStream is important because the dependent of its.
+    /// Must set ImageStream binding before FilePath binding because if set FilePath fisrt, ImageStream create by FilePath will be overrided by ImageStream binding value
     /// </summary>
     public partial class ImagePicker : UserControl
     {
