@@ -64,7 +64,7 @@ namespace huypq.wpf.controls
 
         // Using a DependencyProperty as the backing store for ImageStream.  This enables animation, styling, binding, etc...
         public static readonly DependencyProperty ImageStreamProperty =
-            DependencyProperty.Register("ImageStream", typeof(Stream), typeof(ImagePicker), new PropertyMetadata(null, OnImageStreamChanged));
+            DependencyProperty.Register("ImageStream", typeof(Stream), typeof(ImagePicker), new FrameworkPropertyMetadata(null, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault, OnImageStreamChanged));
 
         private static void OnImageStreamChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
@@ -143,13 +143,15 @@ namespace huypq.wpf.controls
         {
             if (ofd.ShowDialog() == true)
             {
-                FilePath = ofd.FileName;
+                SetCurrentValue(FilePathProperty, ofd.FileName);
             }
         }
 
         private void Clear_MenuItem_Click(object sender, RoutedEventArgs e)
         {
-            FilePath = null;
+            SetValueNoCallback(FilePathProperty, null);
+            SetValueNoCallback(ImageStreamProperty, null);
+            SetImageControlSource(null);
         }
 
         public static BitmapImage LoadImage(byte[] imageData)
