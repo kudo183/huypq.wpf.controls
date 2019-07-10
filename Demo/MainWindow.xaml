@@ -11,5 +11,6 @@
     <StackPanel>
         <controls:DateRangePicker DataContext="{Binding DateRangePickerViewModel}" Height="35"/>
         <local:TestImagePicker/>
+        <controls:Base64Converter Height="200"/>
     </StackPanel>
 </Window>
