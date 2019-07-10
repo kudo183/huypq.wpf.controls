@@ -27,29 +27,43 @@ namespace huypq.wpf.controls
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            if (radioText.IsChecked == true)
+            try
             {
-                txtBase64.Text = Convert.ToBase64String(Encoding.UTF8.GetBytes(txtData.Text));
+                if (radioText.IsChecked == true)
+                {
+                    txtBase64.Text = Convert.ToBase64String(Encoding.UTF8.GetBytes(txtData.Text));
+                }
+                else
+                {
+                    txtBase64.Text = Convert.ToBase64String(ParseHexString(txtData.Text));
+                }
             }
-            else
+            catch (Exception ex)
             {
-                txtBase64.Text = Convert.ToBase64String(ParseHexString(txtData.Text));
+                txtBase64.Text = ex.ToString();
             }
         }
 
         private void Button_Click_1(object sender, RoutedEventArgs e)
         {
-            if (radioText.IsChecked == true)
+            try
             {
-                txtData.Text = Encoding.UTF8.GetString(Convert.FromBase64String(txtBase64.Text));
-            }
-            else
-            {
-                txtData.Clear();
-                foreach (var item in Convert.FromBase64String(txtBase64.Text))
+                if (radioText.IsChecked == true)
                 {
-                    txtData.AppendText(item.ToString("X2"));
+                    txtData.Text = Encoding.UTF8.GetString(Convert.FromBase64String(txtBase64.Text));
                 }
+                else
+                {
+                    txtData.Clear();
+                    foreach (var item in Convert.FromBase64String(txtBase64.Text))
+                    {
+                        txtData.AppendText(item.ToString("X2"));
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                txtData.Text = ex.ToString();
             }
         }
 
@@ -69,6 +83,16 @@ namespace huypq.wpf.controls
                 resultIndex++;
             }
             return result;
+        }
+
+        private void CopyData_Click(object sender, RoutedEventArgs e)
+        {
+            Clipboard.SetText(txtData.Text);
+        }
+
+        private void CopyBase64_Click(object sender, RoutedEventArgs e)
+        {
+            Clipboard.SetText(txtBase64.Text);
         }
     }
 }
