@@ -20,8 +20,10 @@
             <StackPanel Orientation="Horizontal">
                 <TextBlock Text="Data: " VerticalAlignment="Center"/>
                 <RadioButton GroupName="radioType" Margin="5" x:Name="radioText" IsChecked="True" VerticalAlignment="Center">Text</RadioButton>
-                <RadioButton GroupName="radioType" Margin="5" VerticalAlignment="Center">Bytes</RadioButton>
+                <RadioButton x:Name="radioBytes" GroupName="radioType" Margin="5" VerticalAlignment="Center">Bytes</RadioButton>
                 <Button Click="CopyData_Click" Margin="5">Copy</Button>
+                <Button Margin="5" Click="Button_Click_2" IsEnabled="{Binding ElementName=radioBytes,Path=IsChecked}">(0xFF, 0xFF)</Button>
+                <Button Margin="5" Click="Button_Click_3" IsEnabled="{Binding ElementName=radioBytes,Path=IsChecked}">(FF FF)</Button>
             </StackPanel>
             <TextBox x:Name="txtData" Grid.Row="1" FontSize="18" Text="data" TextWrapping="Wrap" VerticalScrollBarVisibility="Auto"/>
         </Grid>
@@ -37,6 +39,12 @@
             <StackPanel Orientation="Horizontal">
                 <TextBlock Text="Base: " VerticalAlignment="Center"/>
                 <Button Click="CopyBase64_Click" Margin="5">Copy</Button>
+                <TextBlock Text="Hex: " VerticalAlignment="Center"/>
+                <TextBox x:Name="txtHex" PreviewKeyDown="TxtHex_PreviewKeyDown" Margin="5" VerticalContentAlignment="Center" Width="60"></TextBox>
+                <TextBlock Text="Dec: " VerticalAlignment="Center"/>
+                <TextBox x:Name="txtDec" PreviewKeyDown="TxtDec_PreviewKeyDown" Margin="5" VerticalContentAlignment="Center" Width="60"></TextBox>
+                <TextBlock Text="Bin: " VerticalAlignment="Center"/>
+                <TextBox x:Name="txtBin" PreviewKeyDown="TxtBin_PreviewKeyDown" Margin="5" VerticalContentAlignment="Center" Width="150"></TextBox>
             </StackPanel>
             <TextBox x:Name="txtBase64" Grid.Row="1" FontSize="18" Text="base64" TextWrapping="Wrap" VerticalScrollBarVisibility="Auto"/>
         </Grid>
